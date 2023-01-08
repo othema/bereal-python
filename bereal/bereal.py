@@ -21,6 +21,9 @@ class BeReal:
         self.feed = None
 
     def post_bereal(self, front_file, back_file, caption=None):
+        # Thanks to: https://github.com/notmarek/BeFake/
+        # And: https://github.com/s-alad/toofake/
+
         def extension(image):
             mime_type = Image.MIME[image.format]
             if mime_type != "image/jpeg":
