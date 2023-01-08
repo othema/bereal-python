@@ -1,3 +1,0 @@
-LOGIN
-- one time passcode: https://toofake.vercel.app/sendotp/+447563845940
-- login with passcode: https://toofake.vercel.app/verifyotp/<otp>/<sessionId>
