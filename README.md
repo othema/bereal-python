@@ -141,7 +141,7 @@ Realmojis are reactions to a BeReal. A realmoji is an image of a user posing as 
 - 😂
 
 #### Accessing your saved realmojis
-You can have saved realmojis on your account. When fetching these, 
+You can have saved realmojis on your account.
 ```python
 from bereal import BeReal
 
