@@ -12,4 +12,11 @@ class Feed:
             url=API_URL + "/feeds/friends",
             headers={"authorization": self._bereal.token}
         ).json()
-        return [Post(post) for post in res]
+        return [Post(post, self._bereal) for post in res]
+
+    def discovery(self):
+        res = requests.get(
+            url=API_URL + "/feeds/discovery",
+            headers={"authorization": self._bereal.token}
+        ).json()
+        return [Post(post, self._bereal) for post in res["posts"]]

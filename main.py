@@ -11,8 +11,11 @@ def main():
     # bereal.login.verify_code(input("Enter verification code: "))
 
     bereal.login.with_tokens(getenv("TOKEN"), getenv("REFRESH_TOKEN"))
-
     bereal.refresh()
+
+    feed = bereal.feed.discovery()
+    for post in feed:
+        print(post.user.username, post.front_camera)
 
 
 main()
