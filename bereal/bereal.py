@@ -1,11 +1,32 @@
 import requests
 from bereal.constants import *
+from bereal.models.Realmoji import Realmoji
 
 
 class BeReal:
     def __init__(self):
         self.login = Login(self)
         self.token = None
+
+        self.me = None
+
+    def _get_me(self):
+        res = requests.get(
+            url=API_URL + "/person/me",
+            headers={"authorization": self.token}
+        ).json()
+        self.me = Me(res)
+
+
+class Me:
+    def __init__(self, data):
+        self.user_id = data["id"]
+        self.phone_number = data["phoneNumber"]
+        self.username = data["username"]
+        self.full_name = data["fullname"]
+        self.birthday = data["birthdate"]
+        self.profile_picture = data["profilePicture"]["url"]
+        self.realmojis = [Realmoji(realmoji) for realmoji in data["realmojis"]]
 
 
 class Login:
@@ -41,3 +62,8 @@ class Login:
             }
         ).json()
         self.bereal.token = res["idToken"]
+        self.bereal._get_me()
+
+    def with_token(self, token):
+        self.bereal.token = token
+        self.bereal._get_me()
