@@ -11,3 +11,4 @@ class Comment:
             self.creation_time = datetime.fromtimestamp(data["creationDate"]["_seconds"])
         else:
             self.creation_time = datetime_override
+

@@ -15,7 +15,6 @@ class Post:
         self.front_camera = data["secondaryPhotoURL"]
         self.back_camera = data["photoURL"]
         self.is_public = data["isPublic"]
-        self.is_late = data["isLate"]
         self.retakes = data["retakeCounter"]
         try:
             self.caption = data["caption"]
