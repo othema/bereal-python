@@ -3,6 +3,7 @@ import requests
 from uuid import uuid4
 from bereal.constants import *
 from bereal.models.feed import Feed
+from bereal.models.post import Post
 from bereal.models.user import Me
 from PIL import Image
 from io import BytesIO
@@ -120,8 +121,29 @@ class BeReal:
             url=API_URL + "/content/post",
             json=payload,
             headers={"authorization": self.token}
-        )
-        return complete_res.json()
+        ).json()
+
+        if "error" in complete_res:
+            raise Exception(f"Error posting your BeReal. (error '{complete_res['errorKey']}')")
+
+        try:
+            caption = complete_res["caption"]
+        except KeyError:
+            caption = None
+        formatted = {  # Format the complete_res data in a way Post() can understand
+            "id": complete_res["id"],
+            "comments": [],
+            "realmojis": [],
+            "photoURL": complete_res["primary"]["url"],
+            "secondaryPhotoURL": complete_res["secondary"]["url"],
+            "user": complete_res["user"],
+            "isLate": complete_res["isLate"],
+            "retakeCounter": complete_res["retakeCounter"],
+            "caption": caption,
+            "isPublic": "public" in complete_res["visiblity"]
+        }
+        # print(complete_res["visibility"])
+        return Post(formatted, self, creation_override=datetime(complete_res["createdAt"]))
 
     def refresh(self):
         if self.refresh_token is None:
@@ -166,7 +188,8 @@ class Login:
             },
             headers=HEADERS
         ).json()
-        print(res)
+        if "error" in res:
+            raise Exception("Error sending OTP - the quota is probably exceeded. Try again in a few minutes.")
         self._otp_session = res["sessionInfo"]
         return res
 

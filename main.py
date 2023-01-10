@@ -10,7 +10,5 @@ def main():
     bereal.login.send_code(input("Enter phone number: "))
     bereal.login.verify_code(input("Enter verification code: "))
 
-    print(bereal.me().realmojis)
-
 
 main()

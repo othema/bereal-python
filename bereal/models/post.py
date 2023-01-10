@@ -7,7 +7,7 @@ import requests
 
 
 class Post:
-    def __init__(self, data, bereal):
+    def __init__(self, data, bereal, creation_override=None):
         self._bereal = bereal
 
         self.post_id = data["id"]
@@ -15,12 +15,16 @@ class Post:
         self.front_camera = data["secondaryPhotoURL"]
         self.back_camera = data["photoURL"]
         self.is_public = data["isPublic"]
+        self.is_late = data["isLate"]
         self.retakes = data["retakeCounter"]
         try:
             self.caption = data["caption"]
         except KeyError:
             self.caption = None
-        self.creation_time = datetime.fromtimestamp(data["creationDate"]["_seconds"])
+        if creation_override is None:
+            self.creation_time = datetime.fromtimestamp(data["creationDate"]["_seconds"])
+        else:
+            self.creation_time = creation_override
         self.comments = [Comment(comment) for comment in data["comment"]]
         self.realmojis = [Realmoji(realmoji) for realmoji in data["realMojis"]]
 
