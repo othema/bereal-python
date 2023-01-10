@@ -46,6 +46,19 @@ bereal.token
 bereal.refresh_token
 ```
 
+### Making a post
+To make a post, you must pass in two file paths to images with one being the front camera image, and one being the back camera image.
+```python
+from bereal import BeReal
+
+bereal = BeReal()
+
+# [Login]
+
+new_post = bereal.post_bereal("[front_image].jpg", "[back_image].jpg")  # Returns a Post() object
+new_post.post_id
+```
+
 ### Accessing your profile data
 Your profile data can be accessed using the `me()` method. Here is an example how:
 ```python
@@ -62,7 +75,7 @@ me.username
 me.profile_picture  # URL to your profile picture
 me.full_name
 me.phone_number
-me.birthday
+me.birthday  # A datetime object
 me.realmojis  # Array of Realmoji() objects saved to your account
 ```
 
