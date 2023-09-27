@@ -26,7 +26,7 @@ bereal.login.verify_code(input("Enter verification code: "))
 ```
 
 #### Login through saved ID's
-You would use this method if you have already logged in the user and you don't want to send another verification code
+You would use this method if you have already logged in the user and you don't want to send another verification code.
 ```python
 from bereal import BeReal
 
