@@ -1,28 +1,40 @@
-from bereal import BeReal
+import os
 from dotenv import load_dotenv
-from os import getenv
-
-SPAM_AMOUNT = 20
+from bereal import BeReal
 
 
 def main():
     load_dotenv()
 
     bereal = BeReal()
-    # bereal.login.send_code(input("Enter phone number: "))
-    # bereal.login.verify_code(input("Enter verification code: "))
 
-    bereal.login.with_tokens(getenv("TOKEN"), getenv("REFRESH_TOKEN"))
+    token = os.getenv("TOKEN")
+    refresh_token = os.getenv("REFRESH_TOKEN")
+
+    if not token:
+        print("Please set TOKEN and REFRESH_TOKEN in your .env file, or login with phone number:")
+        # bereal.login.send_code(input("Enter phone number: "))
+        # bereal.login.verify_code(input("Enter verification code: "))
+        return
+
+    # Login using saved tokens
+    bereal.login.with_tokens(token, refresh_token)
     bereal.refresh()
-    print(bereal.token)
-    print(bereal.refresh_token)
 
+    print("Logged in successfully!")
+
+    # Fetch profile
+    me = bereal.me()
+    print(f"Username: {me.username}")
+    print(f"Full name: {me.full_name}")
+
+    # Fetch friends feed
     feed = bereal.feed.friends()
+    print(f"Retrieved {len(feed)} posts from friends:")
     for post in feed:
-        if post.user.username == "izzygarbett":
-            for _ in range(SPAM_AMOUNT):
-                post.add_comment("Test")
-                print("Spam")
+        caption = f' - "{post.caption}"' if post.caption else ""
+        print(f"  @{post.user.username}{caption}")
 
 
-main()
+if __name__ == "__main__":
+    main()
